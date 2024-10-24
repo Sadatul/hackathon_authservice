@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.sadi</groupId>
     <artifactId>hackathon_authservice</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>hackathon_authservice</name>
     <description>hackathon_authservice</description>
     <url/>
