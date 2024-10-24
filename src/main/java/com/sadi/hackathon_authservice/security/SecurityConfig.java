@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/v1/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/hello/healthy").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/private/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
