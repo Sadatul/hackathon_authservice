@@ -59,6 +59,8 @@ jobs:
       - run: kubectl config get-contexts
       - name: Install Kluctl
         run: curl -s https://kluctl.io/install.sh | bash
+      - name: Replace Image
+        run: sed -i "s/<!IMAGE>/${{ needs.build.outputs.version }}/g" config/prod.yaml
       - name: Deploy with Kluctl
         working-directory: deploy
         continue-on-error: true
