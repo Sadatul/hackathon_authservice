@@ -63,6 +63,6 @@ jobs:
         working-directory: deploy
         continue-on-error: true
         run: |
-          sed -i "s/<!IMAGE>/${{ needs.build.outputs.version }}/g" config/prod.yaml
+          sed -i "s/<\!IMAGE>/${{ needs.build.outputs.version }}/g" config/prod.yaml
           kluctl deploy -t prod -y
 
