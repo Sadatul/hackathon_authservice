@@ -60,5 +60,6 @@ jobs:
       - name: Install Kluctl
         run: curl -s https://kluctl.io/install.sh | bash
       - name: Deploy with Kluctl
+        working-directory: deploy
         run: kluctl deploy -t prod
 
