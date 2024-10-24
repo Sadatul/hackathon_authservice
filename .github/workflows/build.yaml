@@ -60,5 +60,5 @@ jobs:
       - name: Deploy with Kluctl
         working-directory: deploy
         continue-on-error: true
-        run: kluctl deploy -t prod
+        run: kluctl deploy -t prod -y
 
