@@ -8,9 +8,14 @@ on:
       - '.github/**'
   workflow_dispatch:
 
+env:
+  KLUCTL_VERSION: v2.23.0
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -34,3 +39,28 @@ jobs:
           tags: sadatul/hackathon_authservice_prod:${{ steps.version.outputs.VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: "kubernetese-cluster-prod"
+          location: "asia-southeast1-a"
+      - name: Install Kluctl
+        run: |
+            curl -L https://github.com/kluctl/kluctl/releases/download/${{ env.KLUCTL_VERSION }}/kluctl_linux_amd64.tar.gz | tar xz
+            sudo mv kluctl /usr/local/bin/
+      - name: Deploy with Kluctl
+        run: kluctl deploy -t prod
+
