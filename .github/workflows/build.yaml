@@ -28,14 +28,14 @@ jobs:
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION=$VERSION"
-#      - name: Build and push
-#        uses: docker/build-push-action@v6
-#        with:
-#          push: true
-#          context: .
-#          tags: sadatul/hackathon_authservice_prod:${{ steps.version.outputs.VERSION }}
-#          cache-from: type=gha
-#          cache-to: type=gha,mode=max
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: .
+          tags: sadatul/hackathon_authservice_prod:${{ steps.version.outputs.VERSION }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -58,5 +58,6 @@ jobs:
         run: curl -s https://kluctl.io/install.sh | bash
       - name: Deploy with Kluctl
         working-directory: deploy
+        continue-on-error: true
         run: kluctl deploy -t prod
 
